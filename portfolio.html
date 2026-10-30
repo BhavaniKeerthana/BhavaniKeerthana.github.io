@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bhavani Keerthana R – AI & Data Science</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#eef2f7; --surface:#ffffff; --ink:#14213d; --muted:#51607a; --line:#c9d3e0;
+  --accent:#0b7f82; --accent-ink:#ffffff; --hit:#f2b134; --hit-ink:#3b2a00;
+  --display:'Bricolage Grotesque','Helvetica Neue',Arial,sans-serif;
+  --body:'IBM Plex Sans','Segoe UI',Arial,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0e1626; --surface:#17223a; --ink:#e8eefb; --muted:#9fb0cc; --line:#2b3a58;
+    --accent:#3cc6c8; --accent-ink:#06222a; --hit:#f2b134; --hit-ink:#2b1e00; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0e1626; --surface:#17223a; --ink:#e8eefb; --muted:#9fb0cc; --line:#2b3a58;
+  --accent:#3cc6c8; --accent-ink:#06222a; --hit:#f2b134; --hit-ink:#2b1e00; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--body)}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--hit);outline-offset:2px}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+nav{display:flex;flex-wrap:wrap;gap:6px 22px;padding:20px 0;font-weight:500}
+nav a{color:var(--muted);text-decoration:none}
+nav a:hover{color:var(--ink)}
+h1,h2,h3{font-family:var(--display);line-height:1.1;margin:0}
+h1{font-size:clamp(2.6rem,8vw,5rem);font-weight:800;letter-spacing:-.03em;margin-top:28px}
+h2{font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;margin-bottom:6px}
+h3{font-size:1.3rem;font-weight:700}
+.lede{max-width:60ch;color:var(--muted);font-size:1.12rem;margin:18px 0 0}
+section{padding:56px 0 8px}
+.sub{color:var(--muted);max-width:62ch;margin:0 0 22px}
+
+/* matcher */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.chip{font:500 .92rem var(--body);background:var(--surface);color:var(--ink);border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
+.chip:hover{border-color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.status{min-height:1.6em;color:var(--muted);margin:0 0 16px}
+.reset{font:500 .92rem var(--body);background:none;border:none;color:var(--accent);cursor:pointer;text-decoration:underline;padding:0 0 0 8px}
+
+/* projects */
+.proj-list{display:flex;flex-direction:column;gap:16px}
+.proj{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:22px 24px;transition:border-color .2s}
+.proj.on{border-color:var(--hit);border-width:2px}
+.proj-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start}
+.score{flex:none;text-align:right;font-weight:500;color:var(--muted);font-size:.9rem;min-width:84px}
+.bar{height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--hit);transition:width .4s}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.tag{font-size:.82rem;border:1px solid var(--line);border-radius:6px;padding:1px 9px;color:var(--muted)}
+.tag.hit{background:var(--hit);border-color:var(--hit);color:var(--hit-ink);font-weight:500}
+.proj p{margin:0 0 10px;max-width:65ch}
+.more{font:500 .95rem var(--body);background:none;border:none;color:var(--accent);cursor:pointer;padding:0}
+.detail{display:none;margin-top:10px;padding-top:12px;border-top:1px solid var(--line)}
+.detail.open{display:block}
+.detail ul{margin:0;padding-left:20px}
+.detail li{margin-bottom:6px;max-width:65ch}
+
+/* generic rows */
+.row{display:grid;grid-template-columns:150px 1fr;gap:6px 24px;padding:18px 0;border-top:1px solid var(--line)}
+.row .when{color:var(--muted);font-weight:500}
+.row h3{margin-bottom:4px}
+.row p,.row ul{margin:4px 0 0;max-width:65ch}
+.row ul{padding-left:20px}
+.skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.skillbox{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:18px 20px}
+.skillbox h3{font-size:1.05rem;margin-bottom:6px}
+.skillbox p{margin:0;color:var(--muted)}
+.achv{padding-left:20px;max-width:65ch}
+.achv li{margin-bottom:6px}
+.contact{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
+.btn{display:inline-block;text-decoration:none;font-weight:500;border-radius:10px;padding:10px 18px;border:1.5px solid var(--accent);color:var(--accent)}
+.btn.main{background:var(--accent);color:var(--accent-ink)}
+footer{padding:48px 0 40px;color:var(--muted);font-size:.9rem}
+@media (max-width:640px){
+  .row{grid-template-columns:1fr}
+  .proj-head{flex-direction:column}
+  .score{text-align:left}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <nav aria-label="Sections">
+    <a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#skills">Skills</a>
+    <a href="#education">Education</a><a href="#contact">Contact</a>
+  </nav>
+
+  <header>
+    <h1>Bhavani Keerthana R</h1>
+    <p class="lede">AI &amp; Data Science undergraduate in Chennai. I build machine learning web apps in Python and Flask, and I’m looking for an entry-level Data Scientist role where I can turn raw data into useful answers.</p>
+  </header>
+
+  <section id="projects">
+    <h2>Find the project that fits</h2>
+    <p class="sub">Pick the skills you care about. My projects re-rank by how many of them each one uses.</p>
+    <div class="chips" id="chips" role="group" aria-label="Filter projects by skill"></div>
+    <p class="status" id="status" aria-live="polite"></p>
+    <div class="proj-list" id="projList"></div>
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    <div class="row">
+      <div class="when">1 month</div>
+      <div>
+        <h3>Data Scientist Intern</h3>
+        <p>Virtual Tech Services</p>
+        <ul>
+          <li>Contributed to the AI Rural Legal Assistant project through data collection, analysis and preprocessing.</li>
+          <li>Supported model development by improving data quality and preparing training datasets.</li>
+          <li>Wrote project documentation and analytical reports with the development team.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <div class="skills" style="margin-top:18px">
+      <div class="skillbox"><h3>Languages</h3><p>Python, SQL, HTML, CSS</p></div>
+      <div class="skillbox"><h3>Frameworks and libraries</h3><p>Flask, TensorFlow, Streamlit, NumPy, Pandas, Matplotlib</p></div>
+      <div class="skillbox"><h3>Machine learning</h3><p>Decision Tree, Random Forest, K-Nearest Neighbors, CNN</p></div>
+      <div class="skillbox"><h3>Tools and platforms</h3><p>VS Code, Power BI, Google Colab, Jupyter Notebook, GitHub</p></div>
+      <div class="skillbox"><h3>Working style</h3><p>Teamwork, leadership, time management</p></div>
+    </div>
+  </section>
+
+  <section id="education">
+    <h2>Education</h2>
+    <div class="row" style="margin-top:14px">
+      <div class="when">Expected 2027</div>
+      <div><h3>B.Tech, Artificial Intelligence and Data Science</h3><p>Velammal Engineering College, Anna University, Chennai. CGPA 8.41.</p></div>
+    </div>
+    <div class="row">
+      <div class="when">2022–2023</div>
+      <div><h3>Higher Secondary Certificate</h3><p>Geetha Matriculation Higher Secondary School. 81.8%.</p></div>
+    </div>
+  </section>
+
+  <section id="achievements">
+    <h2>Certifications and achievements</h2>
+    <ul class="achv" style="margin-top:14px">
+      <li>NPTEL, Programming in Python</li>
+      <li>Infosys Springboard, Certificate Course in Data Analytics</li>
+      <li>Cloud Security Workshop, CIT, Anna University</li>
+      <li>Participated in Tancam’s Hackathon, TNWise 2025, Rajalakshmi Engineering College</li>
+      <li>Participated in Visai International Project Competition 2026, Vel Tech College</li>
+    </ul>
+  </section>
+
+  <section id="contact">
+    <h2>Get in touch</h2>
+    <p class="sub">Open to entry-level data science roles and internships.</p>
+    <div class="contact">
+      <a class="btn main" href="mailto:bhavanikeerthana19@gmail.com">bhavanikeerthana19@gmail.com</a>
+      <a class="btn main" href="tel:+916379308623">6379308623</a>
+      <a class="btn" href="https://github.com/BhavaniKeerthana" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://linkedin.com/in/bhavani-keerthana-07159b292" target="_blank" rel="noopener">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>© 2026 Bhavani Keerthana R</footer>
+</div>
+
+<script>
+var PROJECTS = [
+  {
+    title: "AI-Based Internship Recommendation and Verification Platform",
+    summary: "A web platform that gathers internship listings, recommends the ones that suit a student, and checks listings for authenticity.",
+    tags: ["Python","Flask","HTML","CSS","MySQL","K-Nearest Neighbors","Logistic Regression"],
+    points: [
+      "Matches internships to students’ skills and preferences using AI.",
+      "Runs an automated verification pipeline to make listings more reliable."
+    ]
+  },
+  {
+    title: "AI-Based Plant Disease Prediction System",
+    summary: "Farmers upload a photo of a crop leaf and get a disease prediction with treatment suggestions.",
+    tags: ["Python","Flask","HTML","CSS","TensorFlow","CNN"],
+    points: [
+      "Classifies leaf diseases with a CNN model.",
+      "Returns predictions in real time through a simple web interface."
+    ]
+  },
+  {
+    title: "AI Rural Legal Assistant",
+    summary: "A web-based legal helper for rural users with multilingual support, complaint generation and voice interaction.",
+    tags: ["Python","Flask","HTML","CSS","MySQL","Speech Recognition","Text-to-Speech"],
+    points: [
+      "Handles legal queries automatically and can speak and listen.",
+      "Includes an admin dashboard to monitor user interactions in one place.",
+      "I also worked on its data collection and preprocessing during my internship."
+    ]
+  }
+];
+
+var FILTERS = ["Python","Flask","MySQL","TensorFlow","CNN","K-Nearest Neighbors","Logistic Regression","Speech Recognition"];
+var selected = [];
+var openIdx = {};
+
+var chipsEl = document.getElementById("chips");
+var listEl = document.getElementById("projList");
+var statusEl = document.getElementById("status");
+
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+function renderChips(){
+  chipsEl.innerHTML = FILTERS.map(function(f){
+    var on = selected.indexOf(f) > -1;
+    return '<button type="button" class="chip" data-f="'+esc(f)+'" aria-pressed="'+on+'">'+esc(f)+'</button>';
+  }).join("");
+}
+
+function render(){
+  var items = PROJECTS.map(function(p, i){
+    var hits = p.tags.filter(function(t){ return selected.indexOf(t) > -1; });
+    return {p:p, i:i, hits:hits};
+  });
+  if(selected.length){
+    items.sort(function(a,b){ return b.hits.length - a.hits.length || a.i - b.i; });
+  }
+  listEl.innerHTML = items.map(function(it){
+    var p = it.p, n = it.hits.length, on = selected.length && n > 0;
+    var pct = selected.length ? Math.round(n / selected.length * 100) : 0;
+    var tags = p.tags.map(function(t){
+      return '<span class="tag'+(it.hits.indexOf(t) > -1 ? ' hit' : '')+'">'+esc(t)+'</span>';
+    }).join("");
+    var score = selected.length
+      ? '<div class="score">'+n+' of '+selected.length+' matched<div class="bar"><i style="width:'+pct+'%"></i></div></div>'
+      : '';
+    var open = !!openIdx[it.i];
+    return '<article class="proj'+(on ? ' on' : '')+'">'
+      + '<div class="proj-head"><h3>'+esc(p.title)+'</h3>'+score+'</div>'
+      + '<div class="tags">'+tags+'</div>'
+      + '<p>'+esc(p.summary)+'</p>'
+      + '<button type="button" class="more" data-i="'+it.i+'" aria-expanded="'+open+'">'+(open ? 'Hide details' : 'Show details')+'</button>'
+      + '<div class="detail'+(open ? ' open' : '')+'"><ul>'+p.points.map(function(x){ return '<li>'+esc(x)+'</li>'; }).join("")+'</ul></div>'
+      + '</article>';
+  }).join("");
+
+  if(!selected.length){
+    statusEl.textContent = "Showing all 3 projects.";
+  } else {
+    var matched = items.filter(function(it){ return it.hits.length > 0; }).length;
+    statusEl.innerHTML = matched
+      ? matched+' of 3 projects use at least one of your '+selected.length+' picks.<button type="button" class="reset" id="reset">Clear picks</button>'
+      : 'None of my projects use that combination yet.<button type="button" class="reset" id="reset">Clear picks</button>';
+  }
+}
+
+chipsEl.addEventListener("click", function(e){
+  var b = e.target.closest(".chip"); if(!b) return;
+  var f = b.getAttribute("data-f"), k = selected.indexOf(f);
+  if(k > -1) selected.splice(k,1); else selected.push(f);
+  renderChips(); render();
+  var again = chipsEl.querySelector('[data-f="'+f+'"]'); if(again) again.focus();
+});
+listEl.addEventListener("click", function(e){
+  var b = e.target.closest(".more"); if(!b) return;
+  var i = b.getAttribute("data-i");
+  openIdx[i] = !openIdx[i];
+  render();
+  var again = listEl.querySelector('.more[data-i="'+i+'"]'); if(again) again.focus();
+});
+statusEl.addEventListener("click", function(e){
+  if(e.target.id === "reset"){ selected = []; renderChips(); render(); }
+});
+
+renderChips(); render();
+</script>
+</body>
+</html>
